@@ -1,0 +1,12 @@
+Create canvas context
+Create and draw ball
+Create and draw the platform
+Create bricks
+Draw score
+Increase the score when the bricks break 
+Add update() to animate the canvas and use requestAnimationFrame(callback)
+Functionality to move the platform using keyboard event handlers
+Functionality to move the ball
+Add wall boundries (ball bounces back if it hits the edge of the canvas)
+Increase the score when the bricks break 
+Lose - redraw the bricks and reset the score 
