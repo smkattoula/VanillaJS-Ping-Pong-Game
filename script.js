@@ -138,9 +138,33 @@ function moveBall() {
         ) {
           ball.dy *= -1;
           brick.visible = false;
+
+          increaseScore();
         }
       }
     });
+  });
+
+  // Lose the game if the ball hits the bottom wall
+  if (ball.y + ball.size > canvas.height) {
+    showAllBricks();
+    score = 0;
+  }
+}
+
+// Create a function that increases the score every time a brick breaks
+function increaseScore() {
+  score++;
+
+  if (score % (brickRowCount * brickRowCount) === 0) {
+    showAllBricks();
+  }
+}
+
+// Create a function that makes all bricks appear
+function showAllBricks() {
+  bricks.forEach((column) => {
+    column.forEach((brick) => (brick.visible = true));
   });
 }
 
