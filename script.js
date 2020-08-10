@@ -88,15 +88,63 @@ function drawScore() {
     ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
 }
 
+// Create a function that moves the paddle on canvas
+function movePlatform() {
+  platform.x += platform.dx;
+
+  // Wall detection
+  if (platform.x + platform.w > canvas.width) {
+    platform.x = canvas.width - platform.w;
+  }
+
+  if (platform.x < 0) {
+    platform.x = 0;
+  }
+}
+
 // Create a function that draws everything
 function draw() {
+  // Clear canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   drawBricks();
   drawBall();
   drawPlatform();
   drawScore();
 }
 
-draw();
+// Create a function that updates canvas drawing and animation
+function update() {
+  movePlatform();
+
+  // Draw everything
+  draw();
+
+  requestAnimationFrame(update);
+}
+
+update();
+
+// Keydown/keyup events
+function keyDown(e) {
+  if (e.key === "Right" || e.key === "ArrowRight") {
+    platform.dx = platform.speed;
+  } else if (e.key === "Left" || e.key === "ArrowLeft") {
+    platform.dx = -platform.speed;
+  }
+  console.log(e);
+}
+
+function keyUp(e) {
+  if (
+    e.key === "Right" ||
+    e.key === "ArrowRight" ||
+    e.key === "Left" ||
+    e.key === "ArrowLeft"
+  ) {
+    platform.dx = 0;
+  }
+}
 
 // Event listeners
 rulesBtn.addEventListener("click", () => {
@@ -106,3 +154,6 @@ rulesBtn.addEventListener("click", () => {
 closeBtn.addEventListener("click", () => {
   rules.classList.remove("show");
 });
+
+document.addEventListener("keydown", keyDown);
+document.addEventListener("keyup", keyUp);
