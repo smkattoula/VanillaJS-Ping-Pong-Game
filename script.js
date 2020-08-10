@@ -102,6 +102,48 @@ function movePlatform() {
   }
 }
 
+// Create a function to move the ball
+function moveBall() {
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  // Wall detection (right/left)
+  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+    ball.dx *= -1;
+  }
+
+  // Wall detection (top/bottom)
+  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+    ball.dy *= -1;
+  }
+
+  // Platform collision
+  if (
+    ball.x - ball.size > platform.x &&
+    ball.x + ball.size < platform.x + platform.w &&
+    ball.y + ball.size > platform.y
+  ) {
+    ball.dy = -ball.speed;
+  }
+
+  // Brick collision
+  bricks.forEach((column) => {
+    column.forEach((brick) => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x && // left brick side check
+          ball.x + ball.size < brick.x + brick.w && // right brick side check
+          ball.y + ball.size > brick.y && // top brick side check
+          ball.y - ball.size < brick.y + brick.h // bottom brick side check
+        ) {
+          ball.dy *= -1;
+          brick.visible = false;
+        }
+      }
+    });
+  });
+}
+
 // Create a function that draws everything
 function draw() {
   // Clear canvas
@@ -116,6 +158,7 @@ function draw() {
 // Create a function that updates canvas drawing and animation
 function update() {
   movePlatform();
+  moveBall();
 
   // Draw everything
   draw();
@@ -132,7 +175,6 @@ function keyDown(e) {
   } else if (e.key === "Left" || e.key === "ArrowLeft") {
     platform.dx = -platform.speed;
   }
-  console.log(e);
 }
 
 function keyUp(e) {
